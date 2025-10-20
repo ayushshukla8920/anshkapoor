@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photo Gallery</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: #0f0f0f;
+      color: #f5f5f5;
+    }
+
+    header {
+      background: #141414;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    header h1 {
+      font-size: 22px;
+      font-weight: 600;
+      color: #e50914;
+      margin: 0;
+    }
+
+    .download-all {
+      background: #e50914;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+    .download-all:hover { background: #b20710; }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 15px;
+      padding: 20px;
+      filter: blur(0);
+      transition: filter 0.3s;
+    }
+    .gallery.blurred { filter: blur(8px); }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      background: #1c1c1c;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .card img {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      display: block;
+      border-radius: 12px;
+      transition: transform 0.4s ease;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 8px 18px rgba(0,0,0,0.5); }
+    .card:hover img { transform: scale(1.08); }
+
+    .card .overlay {
+      position: absolute;
+      bottom: 0; width: 100%;
+      padding: 10px;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      display: flex; justify-content: center;
+    }
+    .overlay a {
+      background: #e50914;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #fff; text-decoration: none; font-weight: 500;
+      transition: background 0.3s;
+    }
+    .overlay a:hover { background: #b20710; }
+
+    .full-view {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.95);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      flex-direction: column;
+      animation: fadeIn 0.4s ease;
+    }
+    .full-view img {
+      max-width: 90%; max-height: 75%;
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.8);
+      animation: zoomIn 0.4s ease;
+    }
+    .close {
+      position: absolute; top: 20px; right: 30px;
+      font-size: 32px; color: #fff;
+      cursor: pointer; font-weight: bold;
+    }
+    .full-download {
+      margin-top: 20px;
+      background: #e50914;
+      padding: 10px 20px;
+      border-radius: 6px;
+      color: #fff; text-decoration: none;
+      font-size: 15px; font-weight: 500;
+      transition: background 0.3s;
+    }
+    .full-download:hover { background: #b20710; }
+
+    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
+    @keyframes zoomIn { from {transform: scale(0.9);} to {transform: scale(1);} }
+
+    /* Login modal */
+    #login-modal {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.85);
+      display: flex; justify-content: center; align-items: center;
+      z-index: 2000;
+    }
+    #login-modal.hidden { display: none; }
+    .login-box {
+      background: #1c1c1c;
+      padding: 30px;
+      border-radius: 12px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+      animation: popin 0.3s ease;
+    }
+    @keyframes popin { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .login-box h2 { margin-bottom: 20px; }
+    .login-box input {
+      width: 100%; padding: 14px; margin: 12px 0;
+      border: none; border-radius: 8px; font-size: 16px;
+    }
+    .login-box button {
+      width: 100%; padding: 14px;
+      background: #e50914; color: #fff;
+      border: none; border-radius: 8px;
+      font-size: 16px; cursor: pointer;
+    }
+    .login-box button:hover { background: #b20710; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Ayush's Server</h1>
+    <a href="javascript:void(0)" onclick="downloadAll()" class="download-all">⬇ Download All</a>
+  </header>
+
+  <div class="gallery blurred" id="gallery"></div>
+
+  <div class="full-view" id="fullView">
+    <span class="close" onclick="closeFullView()">&times;</span>
+    <img id="fullImage" src="">
+    <a id="fullDownload" class="full-download" download>⬇ Download</a>
+  </div>
+
+  <!-- Login Modal -->
+  <div id="login-modal">
+    <div class="login-box">
+      <h2>🔐 Login</h2>
+      <input type="text" id="username" placeholder="Username" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="login()">Login</button>
+    </div>
+  </div>
+
+  <script>
+    async function login() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      try {
+        const res = await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username, password })
+        });
+        if (!res.ok) throw new Error("Login failed");
+        const data = await res.json();
+        localStorage.setItem("token", data.token);
+        document.getElementById("login-modal").classList.add("hidden");
+        document.getElementById("gallery").classList.remove("blurred");
+        loadGallery();
+      } catch {
+        alert("Invalid username or password");
+      }
+    }
+
+    async function loadGallery() {
+      const res = await fetch("/api/photos", {
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+      });
+      if (!res.ok) {
+        logout();
+        return;
+      }
+      const photos = await res.json();
+      const gallery = document.getElementById("gallery");
+      gallery.innerHTML = "";
+      photos.forEach(photo => {
+        const card = document.createElement("div");
+        card.className = "card";
+        const img = document.createElement("img");
+        img.src = `/photos/${photo}`;
+        img.onclick = () => openFullView(photo);
+
+        const overlay = document.createElement("div");
+        overlay.className = "overlay";
+        const downloadLink = document.createElement("a");
+        downloadLink.href = `/api/download/${photo}?auth=${localStorage.getItem("token")}`;
+        downloadLink.textContent = "⬇ Download";
+        overlay.appendChild(downloadLink);
+
+        card.appendChild(img);
+        card.appendChild(overlay);
+        gallery.appendChild(card);
+      });
+    }
+
+    function openFullView(filename) {
+      document.getElementById("fullView").style.display = "flex";
+      document.getElementById("fullImage").src = `/photos/${filename}`;
+      const downloadBtn = document.getElementById("fullDownload");
+      downloadBtn.href = `/api/download/${filename}?auth=${localStorage.getItem("token")}`;
+      downloadBtn.setAttribute("download", filename);
+    }
+    function closeFullView() {
+      document.getElementById("fullView").style.display = "none";
+    }
+    function logout() {
+      localStorage.removeItem("token");
+      document.getElementById("login-modal").classList.remove("hidden");
+      document.getElementById("gallery").classList.add("blurred");
+    }
+    function downloadAll() {
+      window.location.href = `/api/download-all?auth=${localStorage.getItem("token")}`;
+    }
+
+    if (localStorage.getItem("token")) {
+      document.getElementById("login-modal").classList.add("hidden");
+      document.getElementById("gallery").classList.remove("blurred");
+      loadGallery();
+    }
+  </script>
+</body>
+</html>

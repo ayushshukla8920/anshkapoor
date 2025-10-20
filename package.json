@@ -1,0 +1,18 @@
+{
+  "name": "anshu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "nodemon index.js",
+    "start": "node index"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "archiver": "^7.0.1",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
