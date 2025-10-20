@@ -136,6 +136,18 @@
       animation: zoomIn 0.4s ease;
     }
 
+    .card .play-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 40px;
+      color: white;
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
+
     .close {
       position: absolute;
       top: 20px;
@@ -313,8 +325,12 @@
           img.src = `/thumbs/${item.filename}`;
           img.onclick = () => openFullMedia(item);
         } else if (item.type === "video") {
-          img.src = `/thumbs/${item.filename}`;
+          img.src = `/thumbs/${item.filename.slice(0, -3)}JPG`;
           img.onclick = () => openFullMedia(item);
+          const playBtn = document.createElement("div");
+          playBtn.className = "play-button";
+          playBtn.innerHTML = "▶";
+          card.appendChild(playBtn);
         }
 
         img.loading = "lazy";
@@ -325,7 +341,7 @@
         if (item.type === "image") {
           downloadLink.href = `/api/download/${item.filename}?auth=${localStorage.getItem("token")}`;
         } else {
-          downloadLink.href = `/api/download-video/${item.filename}?auth=${localStorage.getItem("token")}`;
+          downloadLink.href = `/api/download/${item.filename}?auth=${localStorage.getItem("token")}`;
         }
         downloadLink.textContent = "⬇ Download";
         overlay.appendChild(downloadLink);

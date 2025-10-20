@@ -72,12 +72,14 @@ app.post("/api/login", (req, res) => {
   return res.status(401).json({ error: "Invalid credentials" });
 });
 app.get("/api/download/:filename", authRequired, (req, res) => {
-  const filePath = path.join(__dirname, "public/photos", req.params.filename);
-  res.download(filePath);
-});
-app.get("/api/download-video/:filename", authRequired, (req, res) => {
-  const filePath = path.join(__dirname, "public/videos", req.params.filename);
-  res.download(filePath);
+  if(req.params.filename.slice(0,3).includes("MOV")){
+    const filePath = path.join(__dirname, "public/videos", req.params.filename);
+    res.download(filePath);
+  }
+  else{
+    const filePath = path.join(__dirname, "public/photos", req.params.filename);
+    res.download(filePath);
+  }
 });
 app.get("/api/download-all", authRequired, (req, res) => {
   const zipFileName = "photos.zip";
