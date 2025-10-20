@@ -12,7 +12,30 @@ const JWT_SECRET = "super-secret-key";
 const TOKEN_EXPIRY = "1h";
 app.use(bodyParser.json());
 app.use(express.static("views"));
+// Serve static files
 app.use("/photos", express.static(path.join(__dirname, "public/photos")));
+app.use("/videos", express.static(path.join(__dirname, "public/videos")));
+app.use("/thumbs", express.static(path.join(__dirname, "public/thumbs")));
+
+app.get("/api/media", authRequired, (req, res) => {
+  const photosDir = path.join(__dirname, "public/photos");
+  const videosDir = path.join(__dirname, "public/videos");
+  const media = [];
+  fs.readdir(photosDir, (err, photoFiles) => {
+    if (!err) {
+      photoFiles.filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f))
+        .forEach(f => media.push({ type: "image", filename: f }));
+    }
+    fs.readdir(videosDir, (err2, videoFiles) => {
+      if (!err2) {
+        videoFiles.filter(f => /\.(mp4|webm|mov|avi)$/i.test(f))
+          .forEach(f => media.push({ type: "video", filename: f }));
+      }
+      res.json(media);
+    });
+  });
+});
+
 function authRequired(req, res, next) {
   let token = null;
   const authHeader = req.headers["authorization"];
@@ -47,14 +70,6 @@ app.post("/api/login", (req, res) => {
     return res.json({ token });
   }
   return res.status(401).json({ error: "Invalid credentials" });
-});
-app.get("/api/photos", authRequired, (req, res) => {
-  const photosDir = path.join(__dirname, "public/photos");
-  fs.readdir(photosDir, (err, files) => {
-    if (err) return res.status(500).json({ error: "Unable to list photos" });
-    const images = files.filter(f => /\.(jpg|jpeg|png|gif|webp)$/i.test(f));
-    res.json(images);
-  });
 });
 app.get("/api/download/:filename", authRequired, (req, res) => {
   const filePath = path.join(__dirname, "public/photos", req.params.filename);

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -41,7 +42,10 @@
       font-weight: 500;
       transition: background 0.3s;
     }
-    .download-all:hover { background: #b20710; }
+
+    .download-all:hover {
+      background: #b20710;
+    }
 
     .gallery {
       display: grid;
@@ -51,7 +55,10 @@
       filter: blur(0);
       transition: filter 0.3s;
     }
-    .gallery.blurred { filter: blur(8px); }
+
+    .gallery.blurred {
+      filter: blur(8px);
+    }
 
     .card {
       position: relative;
@@ -59,9 +66,10 @@
       border-radius: 12px;
       background: #1c1c1c;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       transition: transform 0.3s, box-shadow 0.3s;
     }
+
     .card img {
       width: 100%;
       height: 160px;
@@ -70,96 +78,180 @@
       border-radius: 12px;
       transition: transform 0.4s ease;
     }
-    .card:hover { transform: translateY(-5px); box-shadow: 0 8px 18px rgba(0,0,0,0.5); }
-    .card:hover img { transform: scale(1.08); }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.5);
+    }
+
+    .card:hover img {
+      transform: scale(1.08);
+    }
 
     .card .overlay {
       position: absolute;
-      bottom: 0; width: 100%;
+      bottom: 0;
+      width: 100%;
       padding: 10px;
-      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-      display: flex; justify-content: center;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+      display: flex;
+      justify-content: center;
     }
+
     .overlay a {
       background: #e50914;
       padding: 6px 12px;
       border-radius: 6px;
       font-size: 13px;
-      color: #fff; text-decoration: none; font-weight: 500;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
       transition: background 0.3s;
     }
-    .overlay a:hover { background: #b20710; }
+
+    .overlay a:hover {
+      background: #b20710;
+    }
 
     .full-view {
       display: none;
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.95);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.95);
       justify-content: center;
       align-items: center;
       z-index: 999;
       flex-direction: column;
       animation: fadeIn 0.4s ease;
     }
+
     .full-view img {
-      max-width: 90%; max-height: 75%;
+      max-width: 90%;
+      max-height: 75%;
       border-radius: 12px;
-      box-shadow: 0 0 25px rgba(0,0,0,0.8);
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
       animation: zoomIn 0.4s ease;
     }
+
     .close {
-      position: absolute; top: 20px; right: 30px;
-      font-size: 32px; color: #fff;
-      cursor: pointer; font-weight: bold;
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 32px;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
     }
+
     .full-download {
       margin-top: 20px;
       background: #e50914;
       padding: 10px 20px;
       border-radius: 6px;
-      color: #fff; text-decoration: none;
-      font-size: 15px; font-weight: 500;
+      color: #fff;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
       transition: background 0.3s;
     }
-    .full-download:hover { background: #b20710; }
 
-    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
-    @keyframes zoomIn { from {transform: scale(0.9);} to {transform: scale(1);} }
+    .full-download:hover {
+      background: #b20710;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.9);
+      }
+
+      to {
+        transform: scale(1);
+      }
+    }
 
     /* Login modal */
     #login-modal {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.85);
-      display: flex; justify-content: center; align-items: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
       z-index: 2000;
     }
-    #login-modal.hidden { display: none; }
+
+    #login-modal.hidden {
+      display: none;
+    }
+
     .login-box {
       background: #1c1c1c;
       padding: 30px;
       border-radius: 12px;
       width: 320px;
       text-align: center;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
       animation: popin 0.3s ease;
     }
-    @keyframes popin { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .login-box h2 { margin-bottom: 20px; }
+
+    @keyframes popin {
+      from {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .login-box h2 {
+      margin-bottom: 20px;
+    }
+
     .login-box input {
-      width: 100%; padding: 14px; margin: 12px 0;
-      border: none; border-radius: 8px; font-size: 16px;
+      width: 90%;
+      padding: 14px;
+      margin: 12px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
     }
+
     .login-box button {
-      width: 100%; padding: 14px;
-      background: #e50914; color: #fff;
-      border: none; border-radius: 8px;
-      font-size: 16px; cursor: pointer;
+      width: 100%;
+      padding: 14px;
+      background: #e50914;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
     }
-    .login-box button:hover { background: #b20710; }
+
+    .login-box button:hover {
+      background: #b20710;
+    }
   </style>
 </head>
+
 <body>
   <header>
     <h1>Ayush's Server</h1>
@@ -204,29 +296,39 @@
         alert("Invalid username or password");
       }
     }
-
     async function loadGallery() {
-      const res = await fetch("/api/photos", {
+      const res = await fetch("/api/media", {
         headers: { Authorization: "Bearer " + localStorage.getItem("token") }
       });
-      if (!res.ok) {
-        logout();
-        return;
-      }
-      const photos = await res.json();
+      if (!res.ok) { logout(); return; }
+      const mediaItems = await res.json();
       const gallery = document.getElementById("gallery");
       gallery.innerHTML = "";
-      photos.forEach(photo => {
+
+      mediaItems.forEach(item => {
         const card = document.createElement("div");
         card.className = "card";
+
         const img = document.createElement("img");
-        img.src = `/photos/${photo}`;
-        img.onclick = () => openFullView(photo);
+
+        if (item.type === "image") {
+          img.src = `/thumbs/${item.filename}`;
+          img.onclick = () => openFullMedia(item);
+        } else if (item.type === "video") {
+          img.src = `/thumbs/${item.filename}`; // thumbnail
+          img.onclick = () => openFullMedia(item);
+        }
+
+        img.loading = "lazy";
 
         const overlay = document.createElement("div");
         overlay.className = "overlay";
         const downloadLink = document.createElement("a");
-        downloadLink.href = `/api/download/${photo}?auth=${localStorage.getItem("token")}`;
+        if (item.type === "image") {
+          downloadLink.href = `/api/download/${item.filename}?auth=${localStorage.getItem("token")}`;
+        } else {
+          downloadLink.href = `/api/download/${item.filename}?auth=${localStorage.getItem("token")}`;
+        }
         downloadLink.textContent = "⬇ Download";
         overlay.appendChild(downloadLink);
 
@@ -236,12 +338,35 @@
       });
     }
 
-    function openFullView(filename) {
-      document.getElementById("fullView").style.display = "flex";
-      document.getElementById("fullImage").src = `/photos/${filename}`;
-      const downloadBtn = document.getElementById("fullDownload");
-      downloadBtn.href = `/api/download/${filename}?auth=${localStorage.getItem("token")}`;
-      downloadBtn.setAttribute("download", filename);
+    function openFullMedia(item) {
+      const fullView = document.getElementById("fullView");
+      fullView.innerHTML = `<span class="close" onclick="closeFullView()">&times;</span>`;
+
+      if (item.type === "image") {
+        const img = document.createElement("img");
+        img.src = `/photos/${item.filename}?auth=${localStorage.getItem("token")}`;
+        fullView.appendChild(img);
+      } else if (item.type === "video") {
+        const video = document.createElement("video");
+        video.src = `/videos/${item.filename}?auth=${localStorage.getItem("token")}`;
+        video.controls = true;
+        video.autoplay = false;
+        video.style.maxWidth = "90%";
+        video.style.maxHeight = "75%";
+        fullView.appendChild(video);
+      }
+
+      // Download button
+      const downloadBtn = document.createElement("a");
+      downloadBtn.href = item.type === "image"
+        ? `/api/download/${item.filename}?auth=${localStorage.getItem("token")}`
+        : `/api/download/${item.filename}?auth=${localStorage.getItem("token")}`;
+      downloadBtn.textContent = "⬇ Download";
+      downloadBtn.className = "full-download";
+      downloadBtn.setAttribute("download", item.filename);
+      fullView.appendChild(downloadBtn);
+
+      fullView.style.display = "flex";
     }
     function closeFullView() {
       document.getElementById("fullView").style.display = "none";
@@ -262,4 +387,5 @@
     }
   </script>
 </body>
+
 </html>
