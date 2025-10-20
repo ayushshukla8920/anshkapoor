@@ -75,6 +75,10 @@ app.get("/api/download/:filename", authRequired, (req, res) => {
   const filePath = path.join(__dirname, "public/photos", req.params.filename);
   res.download(filePath);
 });
+app.get("/api/download-video/:filename", authRequired, (req, res) => {
+  const filePath = path.join(__dirname, "public/videos", req.params.filename);
+  res.download(filePath);
+});
 app.get("/api/download-all", authRequired, (req, res) => {
   const zipFileName = "photos.zip";
   res.attachment(zipFileName);
